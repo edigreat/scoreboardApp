@@ -6,6 +6,7 @@ var gulp = require('gulp'),
   exec = require('child_process').exec,
   gutil = require('gulp-util'),
   clear = require('clear'),
+  elmTest = require('gulp-elm-test'),
   counter = 0;
 
 var cmd = 'elm make ./ScoreApp.elm --output ./bundle.js';
@@ -40,4 +41,10 @@ gulp.task('elm', function(cb) {
     cb();
   });
   counter++;
+});
+
+
+gulp.task('test', () => {
+  return gulp.src('test/*Test.elm')
+    .pipe(elmTest());
 });
