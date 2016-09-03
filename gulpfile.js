@@ -1,20 +1,21 @@
 'use strict';
 
+const elmTest = require('gulp-elm-test');
+
 var gulp = require('gulp'),
   http = require('http'),
   st = require('st'),
   exec = require('child_process').exec,
   gutil = require('gulp-util'),
   clear = require('clear'),
-  elmTest = require('gulp-elm-test'),
   counter = 0;
 
-var cmd = 'elm make ./ScoreApp.elm --output ./bundle.js';
+var cmd = 'elm make ./src/ScoreApp.elm --output ./bundle.js';
 clear();
 gulp.task('default', ['server', 'watch', 'elm']);
 
 gulp.task('watch', function(cb) {
-  gulp.watch('**/*.elm', ['elm']);
+  gulp.watch('**/src/*.elm', ['elm']);
 });
 
 gulp.task('server', function(done) {
@@ -43,8 +44,7 @@ gulp.task('elm', function(cb) {
   counter++;
 });
 
-
 gulp.task('test', () => {
-  return gulp.src('test/*Test.elm')
+  return gulp.src('tests/*Test.elm')
     .pipe(elmTest());
 });
