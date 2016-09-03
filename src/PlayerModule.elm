@@ -12,6 +12,7 @@ module PlayerModule
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import String
 
 
 type alias Player =
@@ -48,7 +49,10 @@ addPlayer players name =
         player =
             Player (List.length players) name 0
     in
-        player :: players
+        if not (String.isEmpty name) then
+            player :: players
+        else
+            players
 
 
 editPlayer : List Player -> String -> Int -> List Player
