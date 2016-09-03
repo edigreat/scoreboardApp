@@ -7,4 +7,4 @@ http://courses.knowthen.com/courses/elm-for-beginners
 
 I wrote some extra code for testing and refactor some code into modules.
 # Run Tests
-run *elm-test* command on root directory
+run *elm-test* or *gulp test* command in root directory

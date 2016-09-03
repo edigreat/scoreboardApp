@@ -43,12 +43,32 @@ update msg model =
             else
                 save model
 
-        _ ->
-            model
+        PlayerModule.Score player points ->
+            score model player points
+
+        PlayerModule.Edit player ->
+            { model | name = player.name, playerId = Just player.id }
+
+        PlayerModule.DeletedPlay play ->
+            { model
+                | plays = (PlayerModule.deletedPlay play model.plays)
+                , players = (PlayerModule.updateDeletePlayInPlayer play model.players)
+            }
 
 
+score : Model -> PlayerModule.Player -> Int -> Model
+score model player points =
+    let
+        newPlayers =
+            PlayerModule.scorePlayer player.id points model.players
 
---view
+        play =
+            PlayerModule.Play (List.length model.plays) player.id player.name points
+    in
+        { model
+            | players = newPlayers
+            , plays = play :: model.plays
+        }
 
 
 save : Model -> Model
@@ -65,15 +85,10 @@ edit : Model -> Int -> Model
 edit model id =
     let
         newPlayers =
-            []
+            PlayerModule.editPlayer model.players model.name id
 
         newPlays =
-            []
-
-        --newPlays =
-        --  PlayerModule.editPlay (model.listPlay model.name id)
-        --tot =
-        --  PlayerModule.editPlayer (model.listPlayers model.name id)
+            PlayerModule.editPlay model.plays model.name id
     in
         { model
             | players = newPlayers
@@ -83,11 +98,17 @@ edit model id =
         }
 
 
+
+--view
+
+
 view : Model -> Html PlayerModule.MsgPlayer
 view model =
     div [ class "scoreboard" ]
         [ h1 [] [ text "Score Keepper" ]
+        , PlayerModule.playerSection model.players model.plays
         , PlayerModule.playerForm model.name
+        , PlayerModule.playSection model.plays
         , hr [] []
         , p [] [ text (toString model) ]
         ]

@@ -45,6 +45,6 @@ gulp.task('elm', function(cb) {
 });
 
 gulp.task('test', () => {
-  return gulp.src('tests/*Test.elm')
+  return gulp.src('tests/Main.elm')
     .pipe(elmTest());
 });
